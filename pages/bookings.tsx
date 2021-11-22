@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { NextRouter, useRouter } from "next/router";
 import TextField from "@mui/material/TextField";
 import DatePicker from "@mui/lab/DatePicker";
 import Badge from "@mui/material/Badge";
@@ -6,31 +7,23 @@ import PickersDay from "@mui/lab/PickersDay";
 import { TextFieldProps } from "@mui/material";
 import moment from "moment";
 import TimeSlots from "Components/timeSlots";
-import styles from 'Styles/Bookings.module.scss';
+import DisplayCard from "Components/displayCard";
+import { IHomeProps } from "Types/home";
+import styles from "Styles/Bookings.module.scss";
 
-const data = {
-  name: "Christy Schumm",
-  available: true,
-  timeZone: "(GMT-06:00) America/North_Dakota/New_Salem",
-  daysAvailable: ["11/25/2021", "11/30/2021", "11/28/2021", "11/27/2021"],
-  timeSlots: {
-    "11/25/2021": ["9:00", "9:30", "10:00", "10:30"],
-    "11/30/2021": ["7:00", "7:30", "11:00", "11:30"],
-    "11/28/2021": ["8:00", "8:30", "13:00", "13:30, 14:00", "14:30", "15:00", "15:30"],
-    "11/27/2021": ["6:00", "6:30", "13:00"]
-  }
-};
+type TBookingProps = IHomeProps & NextRouter;
 
-const Booking = () => {
+const Booking = (props: TBookingProps) => {
+  const router = useRouter();
   const [value, setValue] = useState<string | null>(null);
   const handleChange = (selectedDay: Date) => {
     const formatedDay = moment(selectedDay).format("L");
     setValue(formatedDay);
-    console.log("This is the new value: ", formatedDay);
   };
+  const doctor = props.doctors.find((doc) => doc.name === router.query.name);
   const renderDay = (day: Date, _value: Date[], DayComponentProps: any) => {
     const formatedDay = moment(day).format("L");
-    const { daysAvailable } = data;
+    const { daysAvailable } = doctor;
     const isSelected =
       formatedDay ===
       daysAvailable.find((items) => moment(items).format("L") === formatedDay);
@@ -45,10 +38,13 @@ const Booking = () => {
       </Badge>
     );
   };
-  const renderInput = (params: TextFieldProps) => <TextField color="primary" {...params} />;
+  const renderInput = (params: TextFieldProps) => (
+    <TextField color="primary" {...params} />
+  );
 
   return (
     <div className={styles.appointmentContainer}>
+      {doctor && <DisplayCard doctor={doctor} />}
       <DatePicker
         label="Book Appointment"
         value={value}
@@ -57,9 +53,22 @@ const Booking = () => {
         onChange={handleChange}
         renderInput={renderInput}
       />
-      {value && <TimeSlots selectedDay={value} timeSlots={data.timeSlots} />}
+      {value && <TimeSlots selectedDay={value} timeSlots={doctor.timeSlots} />}
     </div>
   );
 };
+
+// This function gets called at build time
+export async function getStaticProps() {
+  // Call an external API endpoint to get posts
+  const res = await fetch("http://localhost:3000/api/doctors");
+  const doctors = await res.json();
+
+  return {
+    props: {
+      doctors,
+    },
+  };
+}
 
 export default Booking;
