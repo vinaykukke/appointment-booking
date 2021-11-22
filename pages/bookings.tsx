@@ -24,9 +24,9 @@ const Booking = (props: TBookingProps) => {
   const renderDay = (day: Date, _value: Date[], DayComponentProps: any) => {
     const formatedDay = moment(day).format("L");
     const { daysAvailable } = doctor;
-    const isSelected =
-      formatedDay ===
-      daysAvailable.find((items) => moment(items).format("L") === formatedDay);
+    const isSelected = daysAvailable.find(
+      (items) => moment(items).format("L") === formatedDay
+    );
 
     return (
       <Badge

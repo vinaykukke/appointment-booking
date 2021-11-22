@@ -4,9 +4,14 @@ import styles from "./displaycard.module.scss";
 
 const DisplayCard = (props: any) => {
   const { doctor, href } = props;
+  const isUnavailable = !doctor.available;
+
   return (
     <div className={styles.cardContainer}>
-      {doctor.available && <span className={styles.pro}>Available</span>}
+      {isUnavailable && <div className={styles.disable} />}
+      <span className={styles.pro}>
+        {isUnavailable ? "Unavaible" : "Available"}
+      </span>
       <img className={styles.round} src={doctor.image} alt="user" />
       <h3>{doctor.name}</h3>
       <h6>{doctor.timeZone}</h6>

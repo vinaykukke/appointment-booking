@@ -29,6 +29,17 @@
   }
 }
 
+.disable {
+  width: 100%;
+  height: 100%;
+  cursor: not-allowed;
+  background-color: lightgrey;
+  position: absolute;
+  top: 0;
+  opacity: 50%;
+  border-radius: 5px;
+}
+
 .primary {
   cursor: pointer;
   margin: 0 10px;
