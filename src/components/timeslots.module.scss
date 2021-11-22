@@ -1,0 +1,25 @@
+.timeSlots {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  padding: 15px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  flex-basis: 17%;
+  width: 400px;
+
+  .slot {
+    cursor: pointer;
+    border: 1px solid #2d2747;
+    border-radius: 2px;
+    display: inline-block;
+    font-size: 12px;
+    margin: 0 7px 7px 0;
+    padding: 7px;
+
+    &:hover {
+      background-color: white;
+      color: #2d2747;
+    }
+  }
+}
