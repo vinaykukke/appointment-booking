@@ -7,7 +7,7 @@ const TimeSlots = (props: any) => {
     ? timeSlots[selectedDay]
     : [];
 
-  const handleClick = (timeSlot) => {
+  const handleClick = (timeSlot) => () => {
     alert(
       `Your appointment on ${selectedDay} at ${timeSlot} has been booked. Congratulations!`
     );
@@ -21,7 +21,7 @@ const TimeSlots = (props: any) => {
         <div
           key={i}
           className={styles.slot}
-          onClick={() => handleClick(timeSlot)}
+          onClick={handleClick(timeSlot)}
         >
           {timeSlot}
         </div>
