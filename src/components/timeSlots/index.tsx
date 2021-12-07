@@ -7,27 +7,21 @@ const TimeSlots = (props: any) => {
     ? timeSlots[selectedDay]
     : [];
 
-  const handleClick = (timeSlot) => () => {
+  const handleClick = (timeSlot: string) => () => {
     alert(
       `Your appointment on ${selectedDay} at ${timeSlot} has been booked. Congratulations!`
     );
   };
 
   const renderTimeSlots = () => {
-    let slots;
+    let slots: JSX.Element | JSX.Element[] = <>No slots available</>;
 
     if (availableSlots.length > 0) {
       slots = availableSlots.map((timeSlot, i) => (
-        <div
-          key={i}
-          className={styles.slot}
-          onClick={handleClick(timeSlot)}
-        >
+        <div key={i} className={styles.slot} onClick={handleClick(timeSlot)}>
           {timeSlot}
         </div>
       ));
-    } else {
-      slots = <div>No slots available</div>;
     }
 
     return slots;
